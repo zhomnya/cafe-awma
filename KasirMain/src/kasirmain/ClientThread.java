@@ -22,15 +22,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.util.Observable;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ClientThread implements Runnable {
-//public class ClientThread extends Observable implements Runnable {
-/*  private BufferedReader br;
-    private PrintWriter pw;
-    private Socket skt;
-    private boolean running;
+//public class ClientThread implements Runnable {
+public class ClientThread extends Observable implements Runnable {
+  private BufferedReader br;
+  private PrintWriter pw;
+  private Socket skt;
+  private int meja;
+  private boolean running;
 
     public ClientThread(Socket socket) throws IOException {
         this.skt = socket;
@@ -49,27 +51,51 @@ public class ClientThread implements Runnable {
         }catch(IOException ioe){ };
     }
 
+    public void procMsg(String msg){
+        StringTokenizer str = new StringTokenizer(msg, "&");
+        String get = str.nextToken();
+            Boolean lanjut = Boolean.parseBoolean(get);
+        get = str.nextToken();
+            meja = Integer.parseInt(get);
+        get = str.nextToken();
+            int jml = Integer.parseInt(get);
+        Transaksi temp = Main.resto.get(meja-1);
+        temp.chDate();
+        temp.setLjt(lanjut);
+        temp.resetPesanan();
+        
+        for (int j=0; j<jml; j++){
+            get = str.nextToken();
+            StringTokenizer str2 = new StringTokenizer(get, ",");
+            String got = str2.nextToken();
+                int id = Integer.parseInt(got);
+            got = str2.nextToken();
+                int tipe = Integer.parseInt(got);
+            got = str2.nextToken();
+                int qty = Integer.parseInt(got);
+            temp.addPesanan(id, tipe, qty);
+        }
+    }
+
     public void run() {
         String msg = ""; //will hold message sent from client
+        String notif = ""; //will hold message sent from client
         System.out.println("Run Client");
 	//sent out initial welcome message etc. if required...
         //pw.println("Welcome to Java based Server");
         try {
-            if (br.ready()){
                 msg = br.readLine();
                 while (msg != null && running) {
                 //provide your server's logic here//
-
                 //right now it is acting as an ECHO server//
-                    
                 //pw.println(msg); //echo msg back to client//
-                    System.out.println(msg);
+                    procMsg(msg);
+                    notif =  "_UPDATE MEJA-"+meja+"\n"+Main.utama.getNotif();
+                    Main.utama.setNotif(notif);
                     msg = br.readLine();
                 }
-            }else{
                 running = false;
                 System.out.println("Selesai");
-            }
        }catch (IOException ioe) {
             System.out.println(ioe);
             running = false;
@@ -86,9 +112,10 @@ public class ClientThread implements Runnable {
         //notify the observers for cleanup etc.
         this.setChanged();              //inherit from Observable
         this.notifyObservers(this);     //inherit from Observable
-    }*/
+    }
     //---------------------------------------------------------------------------
-    Socket connectionsocket = null;
+    /*
+     Socket connectionsocket = null;
     ObjectInputStream input = null;
     ObjectOutputStream output = null;
 
@@ -145,5 +172,5 @@ public class ClientThread implements Runnable {
             System.err.println("Connection stopped : client cut the connection");
             System.out.println("END THREAD");
         }
-    }
+    }*/
 }
