@@ -20,7 +20,8 @@ public class Main {
         // TODO code application logic here
         //INI CLASS UTAMA semuac
         Server test = new Server();
-        test.startServer();
+        //test.startServer();
+        test.Run();
     }
 
 }
