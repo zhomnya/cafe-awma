@@ -1,0 +1,20 @@
+Trace file C:\ORACLEXE\APP\ORACLE\diag\rdbms\xe\xe\trace\xe_m001_7764.trc
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - Production
+Windows NT Version V6.1 Service Pack 1 
+CPU                 : 2 - type 586, 2 Physical Cores
+Process Affinity    : 0x0x00000000
+Memory (Avail/Total): Ph:1161M/1980M, Ph+PgF:4206M/6380M, VA:1219M/2047M 
+Instance name: xe
+Redo thread mounted by this instance: 1
+Oracle process number: 28
+Windows thread id: 7764, image: ORACLE.EXE (M001)
+
+
+*** 2012-04-15 09:40:22.685
+*** SESSION ID:(17.113) 2012-04-15 09:40:22.685
+*** CLIENT ID:() 2012-04-15 09:40:22.685
+*** SERVICE NAME:(SYS$BACKGROUND) 2012-04-15 09:40:22.685
+*** MODULE NAME:(MMON_SLAVE) 2012-04-15 09:40:22.685
+*** ACTION NAME:(Monitor FRA Space) 2012-04-15 09:40:22.685
+ 
+MMNL absent for 99491 secs; Foregrounds taking over
