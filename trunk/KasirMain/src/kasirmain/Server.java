@@ -17,9 +17,9 @@ import java.util.Observable;
 import java.io.IOException;
 import java.io.*;
 
-//public class Server implements Observer {
-public class Server{
-    /*private Socket socket;
+public class Server implements Observer {
+//public class Server{
+    private Socket socket;
     private Vector clients;
     private ServerSocket ssocket;  //Server Socket
     private StartServerThread sst; //inner class
@@ -112,9 +112,10 @@ public class Server{
             }
             this.listen = false;
         }
-    }*/
+    }
     //-------------------------------------------------------------------------------------
-     public Server(){
+  /*
+  public Server(){
         System.out.println("### TRACKER START ###");
     }
 
@@ -149,5 +150,6 @@ public class Server{
             //loop terus, nunggu request lain
         }
     }
+   */
 }
 
