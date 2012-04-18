@@ -11,6 +11,12 @@
 
 package kasirmain;
 
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Ahmad 'ANS' Syuhada
@@ -20,6 +26,56 @@ public class Nota extends javax.swing.JFrame {
     /** Creates new form Nota */
     public Nota(Transaksi tr) {
         initComponents();
+        //set label
+        lblTrans.setText("No Transaksi : "+tr.getNotrans());
+        lblTgl.setText("Tanggal : "+tr.getDate());
+        lblMeja.setText("Meja : "+tr.getMeja());
+        //set tabel
+        DefaultTableModel tempmo = (DefaultTableModel)tblNota.getModel();
+        int ctbl = tempmo.getRowCount();
+        ArrayList<Pesanan> temppes = tr.getPesanan();
+        int cpes = temppes.size();
+        //add
+        if (ctbl<cpes){
+            for (int j=ctbl; j<cpes; j++){
+                Pesanan tpes = temppes.get(j);
+                tempmo.insertRow(ctbl, new Object[]{"","","",""});
+            }
+        }else if (ctbl>cpes){   //del
+            for (int j=ctbl; j>cpes; j--){
+                tempmo.removeRow(j-1);
+            }
+        }
+        //update
+        for (int j=0; j<cpes; j++){
+            Pesanan tpes = temppes.get(j);
+            tempmo.setValueAt(tpes.getID(), j, 0);
+            tempmo.setValueAt(tpes.getType(), j, 1);
+            tempmo.setValueAt(tpes.getQty(), j, 2);
+            tempmo.setValueAt(100, j, 3);
+        }
+        tblNota.setModel(tempmo);
+        //set total
+        int total=0;
+
+        for (int t=0; t<cpes; t++){
+            total += (Integer) tblNota.getValueAt(t, 3);
+        }
+        lblTotal.setText(total+"");
+        txtBayar.addKeyListener
+        (new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_ENTER) {
+                  Toolkit.getDefaultToolkit().beep();
+                  System.out.println("ENTER pressed");
+                  int proc = Integer.parseInt(txtBayar.getText()) - Integer.parseInt(lblTotal.getText());
+                  lblKembali.setText(proc+"");
+                  if (proc>=0) btnCetak.setEnabled(true);
+            }
+           }
+         }
+        );
     }
 
     /** This method is called from within the constructor to
@@ -31,15 +87,18 @@ public class Nota extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblTgl = new javax.swing.JLabel();
         lblMeja = new javax.swing.JLabel();
         lblTrans = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNota = new javax.swing.JTable();
-        lblTotal = new javax.swing.JLabel();
+        jlabel = new javax.swing.JLabel();
         txtBayar = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jlabel2 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
         lblKembali = new javax.swing.JLabel();
+        btnCetak = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nota Transaksi");
@@ -52,7 +111,7 @@ public class Nota extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("lblTgl");
+        lblTgl.setText("lblTgl");
 
         lblMeja.setText("Meja : ");
 
@@ -87,13 +146,19 @@ public class Nota extends javax.swing.JFrame {
         tblNota.getColumnModel().getColumn(2).setResizable(false);
         tblNota.getColumnModel().getColumn(3).setResizable(false);
 
-        lblTotal.setText("Total : ");
-
-        txtBayar.setText("jTextField1");
+        jlabel.setText("Total : ");
 
         jLabel5.setText("Bayar : ");
 
-        lblKembali.setText("Kembalian :");
+        jlabel2.setText("Kembalian :");
+
+        btnCetak.setText("Cetak Nota");
+        btnCetak.setEnabled(false);
+        btnCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCetakActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,25 +167,30 @@ public class Nota extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(lblTgl)
                     .addComponent(lblMeja)
                     .addComponent(lblTrans)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5)
-                            .addComponent(lblTotal)
-                            .addComponent(lblKembali))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCetak)
+                                .addGap(144, 144, 144)
+                                .addComponent(jlabel))
+                            .addComponent(jlabel2))
                         .addGap(18, 18, 18)
-                        .addComponent(txtBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblKembali)
+                            .addComponent(lblTotal)
+                            .addComponent(txtBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lblTgl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblMeja)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -128,13 +198,20 @@ public class Nota extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(lblTotal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblKembali)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlabel)
+                            .addComponent(lblTotal))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlabel2)
+                            .addComponent(lblKembali)))
+                    .addComponent(btnCetak))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -146,23 +223,35 @@ public class Nota extends javax.swing.JFrame {
         Main.utama.setEnabled(true);
     }//GEN-LAST:event_formWindowClosing
 
+    private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Cetak nota clicked");
+        //save ke sql
+        //print nota
+        Main.utama.setEnabled(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCetakActionPerformed
+
     /**
     * @param args the command line arguments
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Nota().setVisible(true);
+                new Nota(new Transaksi()).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnCetak;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jlabel;
+    private javax.swing.JLabel jlabel2;
     private javax.swing.JLabel lblKembali;
     private javax.swing.JLabel lblMeja;
+    private javax.swing.JLabel lblTgl;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTrans;
     private javax.swing.JTable tblNota;

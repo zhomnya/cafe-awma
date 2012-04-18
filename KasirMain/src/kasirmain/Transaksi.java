@@ -20,6 +20,8 @@ public class Transaksi {
     private Date tgltrans;
     private ArrayList<Pesanan> jpesan;
 
+    public Transaksi(){}
+
     public Transaksi(int mmeja, Boolean lljt){
         meja=mmeja;
         lljt=ljt;
@@ -55,6 +57,10 @@ public class Transaksi {
     public void addPesanan(int id, int type, int qty){
         Pesanan psn = new Pesanan(id, type, qty);
         jpesan.add(psn);
+    }
+
+    public void delPesanan(int no){
+        jpesan.remove(no);
     }
 
     public void resetPesanan(){
