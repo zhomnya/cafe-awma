@@ -97,6 +97,11 @@ public class Tampilan extends javax.swing.JFrame {
         });
         tblTrans.setColumnSelectionAllowed(true);
         tblTrans.getTableHeader().setReorderingAllowed(false);
+        tblTrans.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTransMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblTrans);
         tblTrans.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -208,6 +213,7 @@ public class Tampilan extends javax.swing.JFrame {
         if (cpes==0){
             btnCetak.setEnabled(false);
             btnTrans.setEnabled(false);
+            btnHapus.setEnabled(false);
         }else{
             btnCetak.setEnabled(true);
             btnTrans.setEnabled(true);
@@ -235,6 +241,20 @@ public class Tampilan extends javax.swing.JFrame {
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
         System.out.println("Hapus clicked");
+        int celclick = tblTrans.getSelectedRow();
+        int i = lstMeja.getSelectedIndex();
+        Transaksi temp = Main.resto.get(i);
+        //hapus pesanan
+        temp.delPesanan(celclick);
+        //hapus tabel
+        DefaultTableModel tempmo = (DefaultTableModel)tblTrans.getModel();
+        tempmo.removeRow(celclick);
+        tblTrans.setModel(tempmo);
+        if (tblTrans.getRowCount()<1) {
+            btnCetak.setEnabled(false);
+            btnTrans.setEnabled(false);
+            btnHapus.setEnabled(false);
+        }
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
@@ -251,6 +271,12 @@ public class Tampilan extends javax.swing.JFrame {
         this.setEnabled(false);
         nt.setVisible(true);
     }//GEN-LAST:event_btnTransActionPerformed
+
+    private void tblTransMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTransMouseClicked
+        // TODO add your handling code here:
+        int celclick = tblTrans.getSelectedColumn();
+        if (celclick>-1) btnHapus.setEnabled(true);
+    }//GEN-LAST:event_tblTransMouseClicked
 
     /**
     * @param args the command line arguments
