@@ -46,7 +46,9 @@ public class Login extends Activity{
 					bundle.putBoolean("lanjut", lanjut);
 					bundle.putString("nomorMeja", no_meja.getText().toString());
 					
-					Toast.makeText(Login.this, "" + lanjut + "-" + pass.getText() + "-" + no_meja.getText(), Toast.LENGTH_SHORT).show();
+					P.newP(no_meja.getText().toString(), lanjut);
+					
+					//Toast.makeText(Login.this, "" + lanjut + "-" + pass.getText() + "-" + no_meja.getText(), Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(v.getContext(), HelloTabWidget.class).putExtras(bundle);
 					startActivityForResult(intent, 0);
 				}
